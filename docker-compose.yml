@@ -1,0 +1,41 @@
+services:
+  nginx:
+    image: nginx:latest
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./default.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./ssl:/etc/nginx/ssl:ro
+      - ./web:/var/public:ro
+    # depends_on:
+      # - fsk-entry
+      # - fsk-queue
+      # - fsk-traffic
+      # - fsk-energymeter
+    networks:
+      - app-network
+
+  # fsk-entry:
+  #   image: 
+  #   networks:
+  #     - app-network
+  #
+  # fsk-queue:
+  #   image: 
+  #   networks:
+  #     - app-network
+  #
+  # fsk-traffic:
+  #   image: 
+  #   networks:
+  #     - app-network
+  #
+  # fsk-energymeter:
+  #   image: 
+  #   networks:
+  #     - app-network
+
+networks:
+  app-network:
+    driver: bridge
