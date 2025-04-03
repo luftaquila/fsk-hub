@@ -9,6 +9,7 @@ services:
       - ./.ssl:/etc/nginx/ssl:ro
       - ./.htpasswd:/etc/nginx/.htpasswd:ro
       - ./web:/var/public
+      - ./entry/web:/var/public/entry
       - ./energymeter/viewer/web:/var/public/energymeter
     depends_on:
       - fsk-entry

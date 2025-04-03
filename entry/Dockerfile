@@ -6,7 +6,5 @@ COPY package*.json ./
 RUN npm ci
 COPY . .
 
-RUN npm --prefix web ci
-
 EXPOSE 5000
 CMD [ "node", "index.mjs" ]

@@ -165,26 +165,6 @@ app.post('//upload', async (req, res) => {
   res.status(200).send();
 });
 
-// serve static files
-app.get('/', async (req, res) => {
-  try {
-    if (req.path === '/') {
-      return res.sendFile(path.join(web, 'index.html'));
-    }
-
-    const resource = path.join(web, req.path);
-    await fs.access(resource);
-
-    res.sendFile(resource, e => {
-      if (e) {
-        res.status(500).send(e);
-      }
-    });
-  } catch (e) {
-    res.status(404).send(e);
-  }
-});
-
 function validate(data) {
   if (data === undefined || data === null || typeof data !== 'object') {
     return false;
