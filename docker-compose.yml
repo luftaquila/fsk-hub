@@ -18,6 +18,9 @@ services:
       - app-network
 
   fsk-entry:
+    # for development
+    # volumes:
+    #  - ./entry:/home/node/fsk-entry
     image: luftaquila/fsk-entry
     networks:
       - app-network

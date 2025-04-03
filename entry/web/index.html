@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FSK 엔트리 관리</title>
+  <link rel="stylesheet" href="/entry/style.css" />
+  <link rel="stylesheet" href="/assets/btn.css" />
+  <link rel="stylesheet" href="/entry/node_modules/@fortawesome/fontawesome-free/css/all.min.css" />
+  <link rel="stylesheet" href="/entry/node_modules/notyf/notyf.min.css" />
+  <link rel="stylesheet" href="/entry/node_modules/simple-datatables/dist/style.css" />
+  <link rel="stylesheet" href="/entry/node_modules/simple-datatables/dist/editing.css" />
+</head>
+
+<body>
+  <div class="container">
+    <div class="configuration" style="width: 100%;">
+      <h1>🚩 엔트리 관리</h1>
+
+      <div class="mode-description" style="height: unset;">
+        엔트리 목록을 관리합니다.
+
+        <ul>
+          <li>
+            엔트리를 수정하려면 아래 목록에서 셀을 더블클릭하세요.<br>
+            ENTER를 누르면 변경 사항을 저장하고, ESC를 누르면 취소합니다.
+          </li>
+        </ul>
+      </div>
+
+      <article>
+        <h2><i class="fa fw fa-user-plus"></i>엔트리 추가</h2>
+        <div style="display: flex;">
+          <input class="new-entry" id="new-num" type="number" placeholder="엔트리" style="width: 5rem;">
+          <input class="new-entry" id="new-univ" placeholder="학교" style="width: 10rem;">
+          <input class="new-entry" id="new-team" placeholder="팀" style="width: 15rem;">
+          <span class="btn green small" onclick="add()">
+            <i class="fa fw fa-plus"></i>추가
+          </span>
+        </div>
+      </article>
+
+      <article>
+        <h2><i class="fa fw fa-list"></i>엔트리 목록</h2>
+        <div style="width: 800px;">
+          <table id="entry-table"></table>
+        </div>
+      </article>
+
+      <article>
+        <h2><i class="fa fw fa-upload"></i>엔트리 업로드</h2>
+        <div>
+          <input type="file" id="file" accept=".json" />
+          <span class="btn green small" onclick="upload()">
+            <i class="fa fw fa-file-arrow-up"></i>업로드
+          </span>
+        </div>
+      </article>
+    </div>
+  </div>
+
+  <script src='/entry/node_modules/notyf/notyf.min.js'></script>
+  <script src='/entry/node_modules/simple-datatables/dist/umd/simple-datatables.js'></script>
+  <script src='/entry/script.js'></script>
+</body>
+
+</html>

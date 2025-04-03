@@ -1,0 +1,98 @@
+@font-face {
+    font-family: 'goorm-sans-bold';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2408@1.0/goorm-sans-bold.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'MonoplexKR-Regular';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_Monoplex-kr@1.0/MonoplexKR-Regular.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+}
+
+body {
+  margin: 0;
+  width: 100%;
+  position: absolute;
+  font-family: "Goorm Sans", "MonoplexKR", -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  user-select: none;
+}
+
+div.container i.fw {
+  margin-right: 0.5rem;
+}
+
+div.container {
+  margin-left: 1.5rem;
+  display: flex;
+  width: 96%;
+}
+
+div.container div.configuration {
+  width: 26rem;
+  padding-bottom: 0;
+  flex-shrink: 0;
+}
+
+div.configuration div.mode-description {
+  height: 3rem;
+  line-height: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+div.container article {
+  margin-left: 1rem;
+  margin-bottom: 2.5rem;
+}
+
+div.container article h2 {
+  font-size: 1.3rem;
+  margin-left: 1rem;
+  margin-bottom: 1rem;
+}
+
+div.container article table td {
+  padding: 0.2rem;
+}
+
+div.container .configuration article>div {
+  margin-left: 3rem;
+  line-height: 1.5rem;
+}
+
+div.container .configuration article>div>div {
+  margin-bottom: 1rem;
+}
+
+.new-entry {
+  height: 1.5rem;
+  margin-right: 1rem;
+  padding-left: 0.3rem;
+}
+
+#entry-table td {
+  padding: 0.5rem 0;
+}
+
+span.remove i {
+  margin-right: 0.2rem!important;
+}
+
+/*******************************************************************************
+* html default style patch
+*******************************************************************************/
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/*******************************************************************************
+* notyf toast width
+*******************************************************************************/
+.notyf__toast {
+  min-width: 25rem;
+  max-width: 37.5rem;
+}

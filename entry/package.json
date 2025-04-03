@@ -18,6 +18,7 @@
   "description": "",
   "dependencies": {
     "express": "^5.1.0",
+    "lowdb": "^7.0.1",
     "pino-http": "^10.4.0"
   }
 }
