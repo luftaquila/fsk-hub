@@ -3,8 +3,11 @@
 ## Prerequisites
 
 ```sh
-git clone https://github.com/luftaquila/fsk-hub.git
+git clone https://github.com/luftaquila/fsk-hub.git --recursive
 cd fsk-hub
+
+# install energymeter dependencies
+npm --prefix energymeter/viewer/web ci
 
 # ssl certificates required: domain.cert.pem, private.key.pem
 cp /path/to/ssl/certs ./ssl
