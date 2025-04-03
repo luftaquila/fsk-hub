@@ -9,18 +9,18 @@ services:
       - ./.ssl:/etc/nginx/ssl:ro
       - ./.htpasswd:/etc/nginx/.htpasswd
       - ./web:/var/public:ro
-    # depends_on:
-      # - fsk-entry
+    depends_on:
+      - fsk-entry
       # - fsk-queue
       # - fsk-traffic
       # - fsk-energymeter
     networks:
       - app-network
 
-  # fsk-entry:
-  #   image: 
-  #   networks:
-  #     - app-network
+  fsk-entry:
+    image: luftaquila/fsk-entry
+    networks:
+      - app-network
   #
   # fsk-queue:
   #   image: 
