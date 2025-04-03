@@ -6,7 +6,8 @@ services:
       - "443:443"
     volumes:
       - ./default.conf:/etc/nginx/conf.d/default.conf:ro
-      - ./ssl:/etc/nginx/ssl:ro
+      - ./.ssl:/etc/nginx/ssl:ro
+      - ./.htpasswd:/etc/nginx/.htpasswd
       - ./web:/var/public:ro
     # depends_on:
       # - fsk-entry
