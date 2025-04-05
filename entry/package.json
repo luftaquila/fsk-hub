@@ -1,21 +1,4 @@
 {
-  "name": "fsk-entry",
-  "version": "1.0.0",
-  "main": "index.mjs",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/luftaquila/fsk-hub"
-  },
-  "author": "luftaquila <mail@luftaquila.io>",
-  "license": "Beerware",
-  "bugs": {
-    "url": "https://github.com/luftaquila/fsk-hub/issues"
-  },
-  "homepage": "https://github.com/luftaquila/fsk-hub#readme",
-  "description": "",
   "dependencies": {
     "express": "^5.1.0",
     "lowdb": "^7.0.1",
