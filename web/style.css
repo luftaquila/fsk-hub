@@ -1,4 +1,9 @@
-@import url('https://fonts.googleapis.com/css?family=Lato:300,400,700');
+@font-face {
+    font-family: 'Goorm Sans';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2408@1.0/goorm-sans-medium.woff2') format('woff2');
+    font-weight: 500;
+    font-style: normal;
+}
 
 html, body, div, span, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
@@ -25,7 +30,7 @@ a {
 
 body {
   line-height: 1;
-  font-family: lato;
+  font-family: "Goorm Sans", -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   background-color: rgb(243, 244, 246);
   color:#04143A;
 }
@@ -42,21 +47,21 @@ ol, ul {
 
 h1.title {
   font-size: 3rem;
-  font-weight: 600;
+  font-weight: bold;
   display: inline-block;
 }
 
 .description {
   display: block;
   font-size: 1.4rem;
-  font-weight: 400;
+  font-weight: 500;
   color: #81899C;
   margin-top: 1rem;
 }
 
 .section-title {
   font-size: 1.3rem;
-  font-weight: 600;
+  font-weight: bold;
   margin-bottom: 1rem;
 }
 
@@ -73,7 +78,7 @@ h1.title {
 
 .list-card span {
   font-size: 1.2rem;
-  font-weight: 600;
+  font-weight: 400;
   color: #303F6A;
   padding-left: 1.5rem;
 }
@@ -102,6 +107,6 @@ footer {
 
 @media(max-width: 425px) {
   h1.title {
-    font-size: 1.7rem;
+    font-size: 2rem;
   }
 }

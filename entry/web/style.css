@@ -1,14 +1,14 @@
 @font-face {
-    font-family: 'goorm-sans-bold';
-    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2408@1.0/goorm-sans-bold.woff2') format('woff2');
-    font-weight: 700;
+    font-family: 'Goorm Sans';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2408@1.0/goorm-sans-medium.woff2') format('woff2');
+    font-weight: 500;
     font-style: normal;
 }
 
 @font-face {
-    font-family: 'MonoplexKR-Regular';
-    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_Monoplex-kr@1.0/MonoplexKR-Regular.woff2') format('woff2');
-    font-weight: 400;
+    font-family: 'MonoplexKR';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_Monoplex-kr@1.0/MonoplexKR-Medium.woff2') format('woff2');
+    font-weight: 500;
     font-style: normal;
 }
 
