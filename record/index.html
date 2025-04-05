@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FSK 경기 기록</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="/assets/btn.css" />
+  <link rel="stylesheet" href="node_modules/@fortawesome/fontawesome-free/css/all.min.css" />
+  <link rel="stylesheet" href="node_modules/notyf/notyf.min.css" />
+  <link rel="stylesheet" href="node_modules/simple-datatables/dist/style.css" />
+  <link rel="stylesheet" href="node_modules/simple-datatables/dist/editing.css" />
+</head>
+
+<body>
+  <div class="container">
+    <div class="configuration" style="width: 100%;">
+      <h1>📀 경기 기록</h1>
+
+      <div class="mode-description" style="height: unset;">
+        저장된 경기 기록과 컨트롤러 통신 로그를 열람합니다.
+      </div>
+
+      <article>
+        <h2><i class="fa fw fa-folder-open"></i>기록 선택</h2>
+        <div>
+          <select id="file"></select>
+          <span id="refresh" class="btn green small">
+            <i class="fa fw fa-arrows-rotate"></i>새로고침
+          </span>
+        </div>
+
+        <div id="file-record-box">
+          <table id="record-table"></table>
+        </div>
+
+        <div id="file-log-box" style="display: none;">
+          <table id="log-table"></table>
+        </div>
+      </article>
+    </div>
+  </div>
+
+  <script src='node_modules/notyf/notyf.min.js'></script>
+  <script src='node_modules/simple-datatables/dist/umd/simple-datatables.js'></script>
+  <script src='script.js'></script>
+</body>
+
+</html>
