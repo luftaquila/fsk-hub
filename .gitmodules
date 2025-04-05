@@ -1,3 +1,6 @@
 [submodule "energymeter"]
 	path = energymeter
 	url = https://github.com/luftaquila/fsk-energymeter.git
+[submodule "traffic"]
+	path = traffic
+	url = https://github.com/luftaquila/fsk-traffic.git

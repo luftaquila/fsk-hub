@@ -9,12 +9,19 @@ services:
       - ./.ssl:/etc/nginx/ssl:ro
       - ./.htpasswd:/etc/nginx/.htpasswd:ro
       - ./web:/var/public
-      - ./entry/web:/var/public/entry
       - ./energymeter/viewer/web:/var/public/energymeter
     depends_on:
+      - fsk-traffic
       - fsk-entry
       # - fsk-queue
-      # - fsk-traffic
+    networks:
+      - app-network
+
+  fsk-traffic:
+    # for development
+    # volumes:
+    #  - ./traffic:/home/node/fsk-traffic
+    image: luftaquila/fsk-traffic
     networks:
       - app-network
 
@@ -25,16 +32,12 @@ services:
     image: luftaquila/fsk-entry
     networks:
       - app-network
-  #
+
   # fsk-queue:
   #   image: 
   #   networks:
   #     - app-network
   #
-  # fsk-traffic:
-  #   image: 
-  #   networks:
-  #     - app-network
 
 networks:
   app-network:
