@@ -31,7 +31,7 @@ app.get('/all', async (req, res) => {
 });
 
 // return specific entry by number
-app.get('//team', async (req, res) => {
+app.get('/team', async (req, res) => {
   if (req.query.num === undefined) {
     return res.status(400).send('Err: missing entry number');
   }
@@ -46,7 +46,7 @@ app.get('//team', async (req, res) => {
 });
 
 // add new entry
-app.post('//team', async (req, res) => {
+app.post('/team', async (req, res) => {
   let num = Number(req.body.num);
 
   if (req.body.num === '' || Number.isNaN(num) || num < 0) {
@@ -77,7 +77,7 @@ app.post('//team', async (req, res) => {
 });
 
 // update entry
-app.patch('//team', async (req, res) => {
+app.patch('/team', async (req, res) => {
   let num = Number(req.body.num);
 
   if (req.body.num === '' || Number.isNaN(num) || num < 0) {
@@ -127,7 +127,7 @@ app.patch('//team', async (req, res) => {
 });
 
 // remove entry
-app.delete('//team', async (req, res) => {
+app.delete('/team', async (req, res) => {
   let num = Number(req.body.num);
 
   if (req.body.num === '' || Number.isNaN(num) || num < 0) {
@@ -146,7 +146,7 @@ app.delete('//team', async (req, res) => {
 });
 
 // replace db
-app.post('//upload', async (req, res) => {
+app.post('/upload', async (req, res) => {
   let data;
 
   try {
