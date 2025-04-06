@@ -16,8 +16,9 @@ cp /path/to/domain.cert.pem ./ssl
 cp /path/to/private.key.pem ./ssl
 
 # create authentication file
-htpasswd -c .htpasswd <username>
-htpasswd .htpasswd <newuser> # add another user
+htpasswd -c .htpasswd-admin <username>
+cp .htpasswd-admin .htpasswd-official
+htpasswd <htpasswd> <newuser> # add another user
 ```
 
 ## Run
