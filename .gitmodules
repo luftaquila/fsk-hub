@@ -4,3 +4,6 @@
 [submodule "traffic"]
 	path = traffic
 	url = https://github.com/luftaquila/fsk-traffic.git
+[submodule "queue"]
+	path = queue
+	url = https://github.com/luftaquila/fsk-queue.git

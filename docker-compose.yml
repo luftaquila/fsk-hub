@@ -38,7 +38,7 @@ services:
   fsk-queue:
     # for development
     # volumes:
-    #  - ./entry:/home/node/fsk-queue
+    #  - ./queue:/home/node/fsk-queue
     image: luftaquila/fsk-queue
     networks:
       - app-network
