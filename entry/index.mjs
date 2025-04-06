@@ -5,12 +5,10 @@ import pinoHttp from 'pino-http';
 import { JSONFilePreset } from 'lowdb/node';
 
 const db = await JSONFilePreset(path.join(path.resolve(), 'db.json'), {});
-const web = path.join(path.resolve(), 'web');
 
 const app = express();
-
 app.use(express.json());
-app.use(express.static(web));
+app.use(express.static(path.join(path.resolve(), 'web')));
 app.use(express.urlencoded({ extended: true }));
 app.use(pinoHttp({ stream: fs.createWriteStream('./app.log', { flags: 'a' }) }));
 
