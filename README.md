@@ -8,6 +8,7 @@ git clone https://github.com/luftaquila/fsk-hub.git --recursive
 cd fsk-hub
 
 # install dependencies
+npm --prefix web/record ci
 npm --prefix energymeter/viewer/web ci
 
 # copy required ssl certificates

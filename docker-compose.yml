@@ -10,7 +10,6 @@ services:
       - ./.htpasswd-admin:/etc/nginx/.htpasswd-admin:ro
       - ./.htpasswd-official:/etc/nginx/.htpasswd-official:ro
       - ./web:/var/public
-      - ./record:/var/public/record
       - ./energymeter/viewer/web:/var/public/energymeter
     depends_on:
       - fsk-traffic
