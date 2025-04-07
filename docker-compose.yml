@@ -1,12 +1,12 @@
+name: fsk-hub
+
 services:
   nginx:
     image: nginx:latest
     ports:
-      - "80:80"
-      - "443:443"
+      - "${PORT}:3000"
     volumes:
       - ./default.conf:/etc/nginx/conf.d/default.conf:ro
-      - ./.ssl:/etc/nginx/ssl:ro
       - ./.htpasswd-admin:/etc/nginx/.htpasswd-admin:ro
       - ./.htpasswd-official:/etc/nginx/.htpasswd-official:ro
       - ./web:/var/public
@@ -19,26 +19,17 @@ services:
       - app-network
 
   fsk-traffic:
-    # for development
-    # volumes:
-    #  - ./traffic:/home/node/fsk-traffic
-    image: luftaquila/fsk-traffic
+    image: luftaquila/fsk-traffic:latest
     networks:
       - app-network
 
   fsk-entry:
-    # for development
-    # volumes:
-    #  - ./entry:/home/node/fsk-entry
-    image: luftaquila/fsk-entry
+    image: luftaquila/fsk-entry:latest
     networks:
       - app-network
 
   fsk-queue:
-    # for development
-    # volumes:
-    #  - ./queue:/home/node/fsk-queue
-    image: luftaquila/fsk-queue
+    image: luftaquila/fsk-queue:latest
     environment:
       - NAVER_CLOUD_ACCESS_KEY
       - NAVER_CLOUD_SECRET_KEY
