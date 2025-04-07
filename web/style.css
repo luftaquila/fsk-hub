@@ -106,7 +106,7 @@ h1.title {
   line-height: 1.2;
 }
 
-@media(max-width: 425px) {
+@media(max-width: 768px) {
   h1.title {
     font-size: 2rem;
   }
