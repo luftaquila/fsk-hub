@@ -20,6 +20,14 @@ cp /path/to/private.key.pem ./ssl
 htpasswd -c .htpasswd-admin <username>
 cp .htpasswd-admin .htpasswd-official
 htpasswd <htpasswd> <newuser> # add another user
+
+# set sms service environment variables (optional)
+#   NAVER_CLOUD_ACCESS_KEY     : Naver Cloud Access Key ID
+#   NAVER_CLOUD_SECRET_KEY     : Naver Cloud Access Key Secret
+#   NAVER_CLOUD_SMS_SERVICE_ID : Naver Cloud SMS API Service ID
+#   PHONE_NUMBER_SMS_SENDER    : registered sender number (without -)
+cp .env.example .env
+vi .env
 ```
 
 ## Run

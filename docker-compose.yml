@@ -39,6 +39,11 @@ services:
     # volumes:
     #  - ./queue:/home/node/fsk-queue
     image: luftaquila/fsk-queue
+    environment:
+      - NAVER_CLOUD_ACCESS_KEY
+      - NAVER_CLOUD_SECRET_KEY
+      - NAVER_CLOUD_SMS_SERVICE_ID
+      - PHONE_NUMBER_SMS_SENDER
     networks:
       - app-network
 
