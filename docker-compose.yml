@@ -12,14 +12,9 @@ services:
       - ./web:/var/public
       - ./energymeter/viewer/web:/var/public/energymeter
     depends_on:
-      - fsk-traffic
       - fsk-entry
       - fsk-queue
-    networks:
-      - app-network
-
-  fsk-traffic:
-    image: luftaquila/fsk-traffic:latest
+      - fsk-traffic
     networks:
       - app-network
 
@@ -37,6 +32,11 @@ services:
       - NAVER_CLOUD_SECRET_KEY
       - NAVER_CLOUD_SMS_SERVICE_ID
       - PHONE_NUMBER_SMS_SENDER
+    networks:
+      - app-network
+
+  fsk-traffic:
+    image: luftaquila/fsk-traffic:latest
     networks:
       - app-network
 
