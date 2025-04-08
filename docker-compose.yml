@@ -24,6 +24,8 @@ services:
       - app-network
 
   fsk-entry:
+    volumes:
+      - ./data/entry:/home/node/fsk-entry/entry
     image: luftaquila/fsk-entry:latest
     networks:
       - app-network

@@ -1,4 +1,4 @@
-.ssl/
+data/
 .htpasswd*
 
 # Created by https://www.toptal.com/developers/gitignore/api/windows,linux,macos,node

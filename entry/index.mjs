@@ -2,9 +2,16 @@ import fs from 'fs';
 import path from 'path';
 import express from 'express'
 import pinoHttp from 'pino-http';
-import { JSONFilePreset } from 'lowdb/node';
+import Database from 'better-sqlite3';
 
-const db = await JSONFilePreset(path.join(path.resolve(), 'db.json'), {});
+// init db
+const db = new Database('./entry/entry.db');
+db.exec(fs.readFileSync('./entry.sql', 'utf-8'));
+
+process.on('exit', () => db.close());
+process.on('SIGHUP', () => process.exit(128 + 1));
+process.on('SIGINT', () => process.exit(128 + 2));
+process.on('SIGTERM', () => process.exit(128 + 15));
 
 const app = express();
 app.use(express.json());
@@ -16,36 +23,53 @@ app.use((req, res, next) => {
   }
   next();
 });
-app.use(pinoHttp({ stream: fs.createWriteStream('./app.log', { flags: 'a' }) }));
+app.use(pinoHttp({ stream: fs.createWriteStream('./entry/app.log', { flags: 'a' }) }));
 
 app.listen(5000);
 
 // return all entries
 app.get('/all', async (req, res) => {
-  if (req.query.download !== undefined) {
-    res.setHeader('Content-Disposition', 'attachment; filename="entry.json"');
-    res.setHeader('Content-Type', 'application/json');
+  try {
+    const statement = db.prepare("SELECT * FROM entry");
+    const ret = statement.all();
 
-    await db.read();
-    res.send(JSON.stringify(db.data, null, 2));
-  } else {
-    await db.read();
-    res.json(db.data);
+    let data = {};
+
+    for (const row of ret) {
+      data[row.num] = { univ: row.univ, team: row.team };
+    }
+
+    if (req.query.download !== undefined) {
+      res.setHeader('Content-Disposition', 'attachment; filename="entry.json"');
+      res.setHeader('Content-Type', 'application/json');
+      res.send(JSON.stringify(data, null, 2));
+    } else {
+      res.json(data);
+    }
+  } catch (e) {
+    return res.status(500).send(`DB 오류: ${e}`);
   }
 });
 
 // return specific entry by number
-app.get('/team', async (req, res) => {
-  if (req.query.num === undefined) {
-    return res.status(400).send('Err: missing entry number');
+app.get('/team/:num', async (req, res) => {
+  let num = Number(req.params.num);
+
+  if (req.params.num === '' || Number.isNaN(num) || num < 0) {
+    return res.status(400).send('올바르지 않은 엔트리 번호입니다.');
   }
 
-  await db.read();
+  try {
+    const statement = db.prepare("SELECT * FROM entry WHERE num = ?");
+    const row = statement.get(num);
 
-  if (db.data[req.query.num] === undefined) {
-    return res.status(400).send(`Err: entry ${req.query.num} not exists`);
-  } else {
-    return res.json(db.data[req.query.num]);
+    if (!row) {
+      return res.status(400).send(`존재하지 않는 엔트리 번호입니다.`);
+    }
+
+    res.json({ num: row.num, univ: row.univ, team: row.team });
+  } catch (e) {
+    return res.status(500).send(`DB 오류: ${e}`);
   }
 });
 
@@ -54,29 +78,28 @@ app.post('/team', async (req, res) => {
   let num = Number(req.body.num);
 
   if (req.body.num === '' || Number.isNaN(num) || num < 0) {
-    return res.status(400).send('Err: bad entry number');
+    return res.status(400).send('올바르지 않은 엔트리 번호입니다.');
   }
 
   if (req.body.univ === undefined || req.body.univ.trim() === '') {
-    return res.status(400).send('Err: bad entry univ');
+    return res.status(400).send('올바르지 않은 학교명입니다.');
   }
 
   if (req.body.team === undefined || req.body.team.trim() === '') {
-    return res.status(400).send('Err: bad entry team');
+    return res.status(400).send('올바르지 않은 팀명입니다.');
   }
 
-  await db.read();
-
-  if (db.data[num]) {
-    return res.status(400).send(`Err: entry ${num} already exists`);
+  try {
+    const statement = db.prepare("INSERT INTO entry (num, univ, team) VALUES (?, ?, ?)");
+    statement.run(num, req.body.univ.trim(), req.body.team.trim());
+  } catch (e) {
+    if (e.code === 'SQLITE_CONSTRAINT_PRIMARYKEY') {
+      return res.status(400).send('이미 존재하는 엔트리 번호입니다.');
+    } else {
+      return res.status(500).send(`DB 오류: ${e}`);
+    }
   }
 
-  db.data[num] = {
-    univ: req.body.univ.trim(),
-    team: req.body.team.trim(),
-  };
-
-  await db.write();
   res.status(201).send();
 });
 
@@ -85,48 +108,47 @@ app.patch('/team', async (req, res) => {
   let num = Number(req.body.num);
 
   if (req.body.num === '' || Number.isNaN(num) || num < 0) {
-    return res.status(400).send('Err: bad entry number');
+    return res.status(400).send('올바르지 않은 엔트리 번호입니다.');
   }
 
   if (req.body.univ === undefined || req.body.univ.trim() === '') {
-    return res.status(400).send('Err: bad entry univ');
+    return res.status(400).send('올바르지 않은 학교명입니다.');
   }
 
   if (req.body.team === undefined || req.body.team.trim() === '') {
-    return res.status(400).send('Err: bad entry team');
+    return res.status(400).send('올바르지 않은 팀명입니다.');
   }
 
-  await db.read();
-
-  if (req.body.num_changed === false) {
-    if (db.data[num] === undefined) {
-      return res.status(400).send(`Err: entry ${num} not exists`);
-    }
-
-    db.data[num] = {
-      univ: req.body.univ.trim(),
-      team: req.body.team.trim(),
-    };
-  } else {
+  if (req.body.num_changed) {
     let prev = Number(req.body.prev);
 
-    if (req.body.prev === '' || Number.isNaN(prev) || prev < 0) {
-      return res.status(400).send('Err: bad prev entry number');
-    }
+    try {
+      const statement = db.prepare("UPDATE entry SET num = ? WHERE num = ?");
+      const ret = statement.run(num, prev);
 
-    if (db.data[prev] === undefined) {
-      return res.status(400).send(`Err: entry ${prev} not exists`);
+      if (!ret.changes) {
+        return res.status(400).send('존재하지 않는 엔트리 번호입니다.');
+      }
+    } catch (e) {
+      if (e.code === 'SQLITE_CONSTRAINT_PRIMARYKEY') {
+        return res.status(400).send('이미 존재하는 엔트리 번호입니다.');
+      } else {
+        return res.status(500).send(`DB 오류: ${e}`);
+      }
     }
+  } else {
+    try {
+      const statement = db.prepare("UPDATE entry SET univ = ?, team = ? WHERE num = ?");
+      const ret = statement.run(req.body.univ.trim(), req.body.team.trim(), num);
 
-    if (db.data[num]) {
-      return res.status(400).send(`Err: entry ${num} already exists`);
+      if (!ret.changes) {
+        return res.status(400).send('존재하지 않는 엔트리 번호입니다.');
+      }
+    } catch (e) {
+      return res.status(500).send(`DB 오류: ${e}`);
     }
-
-    db.data[num] = db.data[prev];
-    delete db.data[prev];
   }
 
-  await db.write();
   res.status(200).send();
 });
 
@@ -135,17 +157,20 @@ app.delete('/team', async (req, res) => {
   let num = Number(req.body.num);
 
   if (req.body.num === '' || Number.isNaN(num) || num < 0) {
-    return res.status(400).send('Err: bad entry number');
+    return res.status(400).send('올바르지 않은 엔트리 번호입니다.');
   }
 
-  await db.read();
+  try {
+    const statement = db.prepare("DELETE FROM entry WHERE num = ?");
+    const ret = statement.run(num);
 
-  if (db.data[num] === undefined) {
-    return res.status(400).send(`Err: entry ${num} not exists`);
+    if (!ret.changes) {
+      return res.status(400).send(`존재하지 않는 엔트리 번호입니다.`);
+    }
+  } catch (e) {
+    return res.status(500).send(`DB 오류: ${e}`);
   }
 
-  delete db.data[num];
-  await db.write();
   res.status(200).send();
 });
 
@@ -156,14 +181,21 @@ app.post('/upload', async (req, res) => {
   try {
     data = JSON.parse(req.body.data);
   } catch (e) {
-    return res.status(400).send(`Err: bad db format: ${e}`);
+    return res.status(400).send(`JSON 파일을 읽을 수 없습니다: ${e}`);
   }
 
-  if (validate(data)) {
-    db.data = data;
-    await db.write();
-  } else {
-    return res.status(400).send('Err: bad db format');
+  if (!validate(data)) {
+    return res.status(400).send('올바르지 않은 JSON 형식입니다.');
+  }
+
+  try {
+    const statement = db.prepare("INSERT INTO entry (num, univ, team) VALUES (?, ?, ?)");
+
+    for (const [k, v] of Object.entries(data)) {
+      statement.run(Number(k), v.univ, v.team);
+    }
+  } catch (e) {
+    return res.status(500).send(`DB 오류: ${e}`);
   }
 
   res.status(200).send();

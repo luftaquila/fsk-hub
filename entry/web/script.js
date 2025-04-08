@@ -38,7 +38,7 @@ let table = new simpleDatatables.DataTable("#entry-table", {
 
 simpleDatatables.makeEditable(table, { contextMenu: false });
 
-table.on("editable.save.cell", (newValue, oldValue, row, column) => {
+table.on("editable.save.cell", async (newValue, oldValue, row, column) => {
   if (newValue === oldValue) {
     return;
   }
@@ -67,7 +67,7 @@ async function update() {
     const res = await fetch('/entry/all');
 
     if (!res.ok) {
-      throw new Error(`failed to get entry list: ${res.status}`);
+      throw new Error(`엔트리 목록을 가져오지 못했습니다. (${res.status})`);
     }
 
     let result = Object.entries(await res.json()).map(([key, value]) => ({
@@ -95,7 +95,7 @@ async function add() {
     });
 
     if (!res.ok) {
-      throw new Error(`add failed: ${await res.text()}`);
+      throw new Error(await res.text());
     }
 
     document.getElementById("new-num").value = '';
@@ -103,10 +103,11 @@ async function add() {
     document.getElementById("new-team").value = '';
 
     notyf.success(`${num}번 엔트리를 추가했습니다.`);
-    update();
   } catch (e) {
     notyf.error(e.message);
   }
+
+  update();
 }
 
 async function edit(entry) {
@@ -118,14 +119,15 @@ async function edit(entry) {
     });
 
     if (!res.ok) {
-      throw new Error(`edit failed: ${await res.text()}`);
+      throw new Error(await res.text());
     }
 
     notyf.success(`${entry.num}번 엔트리를 수정했습니다.`);
-    update();
   } catch (e) {
     notyf.error(e.message);
   }
+
+  update();
 }
 
 async function remove(num) {
@@ -137,14 +139,15 @@ async function remove(num) {
     });
 
     if (!res.ok) {
-      throw new Error(`remove failed: ${await res.text()}`);
+      throw new Error(await res.text());
     }
 
     notyf.success(`${num}번 엔트리를 삭제했습니다.`);
-    update();
   } catch (e) {
     notyf.error(e.message);
   }
+
+  update();
 }
 
 async function upload() {
@@ -162,7 +165,7 @@ async function upload() {
     });
 
     if (!res.ok) {
-      throw new Error(`upload failed: ${await res.text()}`);
+      throw new Error(await res.text());
     }
 
     notyf.success('파일 업로드 완료');

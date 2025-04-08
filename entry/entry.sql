@@ -1,0 +1,5 @@
+CREATE TABLE IF NOT EXISTS entry (
+    num INTEGER PRIMARY KEY,
+    univ TEXT NOT NULL,
+    team TEXT NOT NULL
+);
