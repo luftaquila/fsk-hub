@@ -5,7 +5,7 @@ import pinoHttp from 'pino-http';
 import Database from 'better-sqlite3';
 
 // init db
-const db = new Database('./entry/entry.db');
+const db = new Database('./data/entry.db');
 db.exec(fs.readFileSync('./entry.sql', 'utf-8'));
 
 process.on('exit', () => db.close());
@@ -23,7 +23,7 @@ app.use((req, res, next) => {
   }
   next();
 });
-app.use(pinoHttp({ stream: fs.createWriteStream('./entry/app.log', { flags: 'a' }) }));
+app.use(pinoHttp({ stream: fs.createWriteStream('./data/app.log', { flags: 'a' }) }));
 
 app.listen(5000);
 

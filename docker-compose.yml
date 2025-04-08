@@ -20,12 +20,14 @@ services:
 
   fsk-entry:
     volumes:
-      - ./data/entry:/home/node/fsk-entry/entry
+      - ./data/entry:/home/node/fsk-entry/data
     image: luftaquila/fsk-entry:latest
     networks:
       - app-network
 
   fsk-queue:
+    volumes:
+      - ./data/queue:/home/node/fsk-queue/data
     image: luftaquila/fsk-queue:latest
     environment:
       - NAVER_CLOUD_ACCESS_KEY
@@ -36,6 +38,8 @@ services:
       - app-network
 
   fsk-traffic:
+    volumes:
+      - ./data/traffic:/home/node/fsk-traffic/data
     image: luftaquila/fsk-traffic:latest
     networks:
       - app-network
