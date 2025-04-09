@@ -76,7 +76,7 @@ async function setup() {
     try {
       let data = await get(`/traffic/record?name=${event.target.value}`);
 
-      if (event.target.value === "log") {
+      if (event.target.value === "controller") {
         document.getElementById('file-record-box').style.display = "none";
         document.getElementById('file-log-box').style.display = "block";
         table.log.data.data = [];
@@ -108,9 +108,9 @@ async function setup() {
 
           return {
             date: date_to_string(new Date(x.time)),
-            num: x.entry.num,
-            univ: x.entry.univ,
-            team: x.entry.team,
+            num: x.num,
+            univ: x.univ,
+            team: x.team,
             lane: x.lane,
             type: name,
             result: `${x.result} ms`,
@@ -153,7 +153,7 @@ async function get(url) {
   const res = await fetch(url);
 
   if (!res.ok) {
-    throw new Error(`failed to get: ${res.status}`);
+    throw new Error(await res.text());
   }
 
   const type = res.headers.get('content-type');
@@ -162,18 +162,6 @@ async function get(url) {
     return await res.json();
   } else {
     return await res.text();
-  }
-}
-
-async function post(url, data) {
-  const res = await fetch(url, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(data)
-  });
-
-  if (!res.ok) {
-    throw new Error(`failed to post: ${await res.text()}`);
   }
 }
 
