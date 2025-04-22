@@ -7,3 +7,6 @@
 [submodule "queue"]
 	path = queue
 	url = https://github.com/luftaquila/fsk-queue.git
+[submodule "web/autoindex"]
+	path = web/autoindex
+	url = https://github.com/luftaquila/autoindex.git
