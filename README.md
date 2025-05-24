@@ -17,6 +17,8 @@ npm --prefix energymeter/viewer/web ci
 # create auth files
 htpasswd -c .htpasswd-admin <username>
 cp .htpasswd-admin .htpasswd-official
+
+htpasswd -c .htpasswd-ksae <username>
 ```
 
 ### Optional configurations

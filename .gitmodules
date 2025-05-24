@@ -10,3 +10,6 @@
 [submodule "web/autoindex"]
 	path = web/autoindex
 	url = https://github.com/luftaquila/autoindex.git
+[submodule "enroll"]
+	path = enroll
+	url = https://github.com/luftaquila/ksae-enroll
