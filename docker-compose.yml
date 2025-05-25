@@ -53,7 +53,7 @@ services:
 
   ksae-enroll:
     volumes:
-      - ./data/traffic:/home/node/ksae-enroll/data
+      - ./data/enroll:/home/node/ksae-enroll/data
     # build:
     #   context: ./enroll
     image: luftaquila/ksae-enroll:latest
