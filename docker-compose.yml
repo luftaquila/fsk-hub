@@ -3,8 +3,12 @@ name: fsk-hub
 services:
   nginx:
     image: nginx:latest
-    ports:
-      - "${PORT}:3000"
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.fsk.rule=Host(`fsk.luftaquila.io`)
+      - traefik.http.routers.fsk.entrypoints=websecure
+      - traefik.http.routers.fsk.tls=true
+      - traefik.http.services.fsk.loadbalancer.server.port=3000
     volumes:
       - ./default.conf:/etc/nginx/conf.d/default.conf:ro
       - ./.htpasswd-ksae:/etc/nginx/.htpasswd-ksae:ro
@@ -17,6 +21,7 @@ services:
       - fsk-queue
       - fsk-traffic
     networks:
+      - traefik
       - app-network
     restart: unless-stopped
 
@@ -71,5 +76,7 @@ services:
     restart: unless-stopped
 
 networks:
+  traefik:
+    external: true
   app-network:
     driver: bridge
