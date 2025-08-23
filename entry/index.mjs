@@ -9,7 +9,8 @@ const db = new Database('./data/entry.db');
 db.exec(`CREATE TABLE IF NOT EXISTS entry (
   num INTEGER PRIMARY KEY,
   univ TEXT NOT NULL,
-  team TEXT NOT NULL
+  team TEXT NOT NULL,
+  enroll TEXT DEFAULT '[]'
 );`);
 
 process.on('exit', () => db.close());
@@ -37,7 +38,7 @@ app.get('/all', (req, res) => {
     let data = {};
 
     for (const row of db.prepare("SELECT * FROM entry").all()) {
-      data[row.num] = { univ: row.univ, team: row.team };
+      data[row.num] = { univ: row.univ, team: row.team, enroll: JSON.parse(row.enroll) };
     }
 
     if (req.query.download !== undefined) {
@@ -90,7 +91,7 @@ app.post('/team', (req, res) => {
   }
 
   try {
-    db.prepare("INSERT INTO entry (num, univ, team) VALUES (?, ?, ?)").run(num, req.body.univ.trim(), req.body.team.trim());
+    db.prepare("INSERT INTO entry (num, univ, team, enroll) VALUES (?, ?, ?, '[]')").run(num, req.body.univ.trim(), req.body.team.trim());
     res.status(201).send();
   } catch (e) {
     if (e.code === 'SQLITE_CONSTRAINT_PRIMARYKEY') {
@@ -170,6 +171,31 @@ app.delete('/team', (req, res) => {
   }
 });
 
+app.post('/enroll', (req, res) => {
+  const num = Number(req.body.num);
+
+  if (req.body.num === '' || Number.isNaN(num) || num < 0) {
+    return res.status(400).send('올바르지 않은 엔트리 번호입니다.');
+  }
+
+  try {
+    const row = db.prepare("SELECT enroll FROM entry WHERE num = ?").get(num);
+
+    if (!row) {
+      return res.status(400).send('존재하지 않는 엔트리 번호입니다.');
+    }
+    
+    if (JSON.parse(row.enroll).some(date => date.startsWith(new Date().toISOString().slice(0, 10)))) {
+      return res.status(400).send('이미 오늘 등록된 엔트리입니다.');
+    }
+
+    db.prepare(`UPDATE entry SET enroll = json_insert(enroll, '$[#]', ?) WHERE num = ?`).run(new Date().toISOString(), num);
+    res.status(200).send();
+  } catch (e) {
+    return res.status(500).send(`DB 오류: ${e}`);
+  }
+});
+
 // replace db
 app.post('/upload', (req, res) => {
   let data;
@@ -188,7 +214,7 @@ app.post('/upload', (req, res) => {
     db.transaction(() => {
       db.prepare("DELETE FROM entry").run();
 
-      const query = db.prepare("INSERT INTO entry (num, univ, team) VALUES (?, ?, ?)");
+      const query = db.prepare("INSERT INTO entry (num, univ, team, enroll) VALUES (?, ?, ?, '[]')");
 
       for (const [k, v] of Object.entries(data)) {
         query.run(Number(k), v.univ, v.team);
