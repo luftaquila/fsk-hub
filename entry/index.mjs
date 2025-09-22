@@ -248,7 +248,7 @@ function validate(data) {
 
     const keys = Object.keys(value);
 
-    if (keys.length !== 2 || !keys.includes('univ') || !keys.includes('team')) {
+    if (!keys.includes('univ') || !keys.includes('team')) {
       return false;
     }
   }
